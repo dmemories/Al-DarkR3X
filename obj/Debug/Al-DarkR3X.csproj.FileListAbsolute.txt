@@ -1,0 +1,13 @@
+C:\Users\Alkaiser\Desktop\New folder\Al-DarkR3X\bin\Debug\Al-DarkR3X.exe.config
+C:\Users\Alkaiser\Desktop\New folder\Al-DarkR3X\bin\Debug\Al-DarkR3X.exe
+C:\Users\Alkaiser\Desktop\New folder\Al-DarkR3X\bin\Debug\Al-DarkR3X.pdb
+C:\Users\Alkaiser\Desktop\New folder\Al-DarkR3X\bin\Debug\WindowsInput.dll
+C:\Users\Alkaiser\Desktop\New folder\Al-DarkR3X\bin\Debug\WindowsInput.xml
+C:\Users\Alkaiser\Desktop\New folder\Al-DarkR3X\obj\Debug\Al-DarkR3X.csprojAssemblyReference.cache
+C:\Users\Alkaiser\Desktop\New folder\Al-DarkR3X\obj\Debug\Al_DarkR3X.Properties.Resources.resources
+C:\Users\Alkaiser\Desktop\New folder\Al-DarkR3X\obj\Debug\Al-DarkR3X.csproj.GenerateResource.cache
+C:\Users\Alkaiser\Desktop\New folder\Al-DarkR3X\obj\Debug\Al-DarkR3X.csproj.CoreCompileInputs.cache
+C:\Users\Alkaiser\Desktop\New folder\Al-DarkR3X\obj\Debug\Al-DarkR3X.csproj.CopyComplete
+C:\Users\Alkaiser\Desktop\New folder\Al-DarkR3X\obj\Debug\Al-DarkR3X.exe
+C:\Users\Alkaiser\Desktop\New folder\Al-DarkR3X\obj\Debug\Al-DarkR3X.pdb
+C:\Users\Alkaiser\Desktop\New folder\Al-DarkR3X\obj\Debug\Al_DarkR3X.Form1.resources
