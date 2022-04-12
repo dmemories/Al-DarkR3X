@@ -3,18 +3,19 @@ using System.Windows.Forms;
 using System.Threading;
 using WindowsInput;
 
-
 namespace Al_DarkR3X
 {
     public partial class Form1 : Form
     {
         private LowLevelKeyboardListener lowLevelKeyboardListener;
         private InputSimulator inputSimulator;
+        private bool enableProcess;
         private bool skipKeypress;
         private bool wantCursorUpPosition;
 
         private int DELAY_AFTER_ZEN = 50; // 20, 
         private int DELAY_AFTER_ABSORB = 120; // 90, 120
+        private int DELAY_BEFORE_CLICK = 10;
 
         public Form1()
         {
@@ -23,51 +24,61 @@ namespace Al_DarkR3X
             lowLevelKeyboardListener = new LowLevelKeyboardListener();
             lowLevelKeyboardListener.OnKeyPressed += _listener_OnKeyPressed;
             lowLevelKeyboardListener.HookKeyboard();
+            enableProcess = true;
             skipKeypress = false;
             wantCursorUpPosition = true;
+            SetEnableProcess(true);
         }
 
         void _listener_OnKeyPressed(object sender, KeyPressedArgs e)
         {
-            //this.textBox_DisplayKeyboardInput.Text += e.KeyPressed.ToString();
-            Console.WriteLine(e.KeyPressed);
-            //SendKeys.Send("d");
-            if (skipKeypress)
+            Console.WriteLine(e.KeyPressed.ToString());
+            string activeTitle = ActiveWindow.GetActiveWindowTitle().ToLower();
+
+            if (e.KeyPressed.ToString() == "PageUp")
+            {
+                if (enableProcess) SetEnableProcess(false);
+                else SetEnableProcess(true);
+                return;
+            }
+
+            if (
+                !enableProcess ||
+                skipKeypress ||
+                (!activeTitle.Contains("ro") && !activeTitle.Contains("pvp"))
+            )
             {
                 return;
             }
             else
             {
-                if (e.KeyPressed.ToString() == "D1")
+                skipKeypress = true;
+                switch (e.KeyPressed.ToString())
                 {
-                    skipKeypress = true;
-                    CastCombo();
-                    Thread.Sleep(DELAY_AFTER_ZEN);
-                    CastCombo();
-                    Thread.Sleep(DELAY_AFTER_ZEN);
-                    CastCombo();
+                    case "D3":
+                        CastCombo();
+                        Thread.Sleep(DELAY_AFTER_ZEN);
+                        CastCombo();
+                        Thread.Sleep(DELAY_AFTER_ZEN);
+                        CastCombo();
+                        break;
 
-                    Thread.Sleep(10);
-                    skipKeypress = false;
+                    case "D4":
+                        ZenHidden();
+                        break;
+
+                    case "D5":
+                        HiddenCombo();
+                        break;
+
+                    case "D6":
+                        SendKeys.Send("a");
+                        Thread.Sleep(4);
+                        SendKeys.Send("Z");
+                        break;
                 }
-                if (e.KeyPressed.ToString() == "D2")
-                {
-                    skipKeypress = true;
-                    SendKeys.Send("a");
-                    Thread.Sleep(4);
-                    SendKeys.Send("Z");
-                    Thread.Sleep(10);
-                    skipKeypress = false;
-                }
-                if (e.KeyPressed.ToString() == "D3")
-                {
-                    skipKeypress = true;
-                    SendKeys.Send("a");
-                    Thread.Sleep(4);
-                    SendKeys.Send("Z");
-                    Thread.Sleep(10);
-                    skipKeypress = false;
-                }
+                Thread.Sleep(10);
+                skipKeypress = false;
             }
         }
 
@@ -90,10 +101,55 @@ namespace Al_DarkR3X
                 LowLevelMouse.SetCursorPos(Cursor.Position.X, Cursor.Position.Y - 10);
             }
             SendKeys.Send("{F4}");
-            Thread.Sleep(10);
+            Thread.Sleep(DELAY_BEFORE_CLICK);
             LeftClick();
             Thread.Sleep(DELAY_AFTER_ABSORB);
             SendKeys.Send("{F2}");
+        }
+
+        private void ZenHidden()
+        {
+            if (wantCursorUpPosition)
+            {
+                wantCursorUpPosition = false;
+                LowLevelMouse.SetCursorPos(Cursor.Position.X, Cursor.Position.Y + 10);
+            }
+            else
+            {
+                wantCursorUpPosition = true;
+                LowLevelMouse.SetCursorPos(Cursor.Position.X, Cursor.Position.Y - 10);
+            }
+            SendKeys.Send("w");
+            Thread.Sleep(50);
+            SendKeys.Send("{F4}");
+            Thread.Sleep(DELAY_BEFORE_CLICK);
+            LeftClick();
+            Thread.Sleep(DELAY_AFTER_ABSORB);
+            SendKeys.Send("{F2}");
+
+            Thread.Sleep(10);
+            SendKeys.Send("w");
+            Thread.Sleep(40);
+            SendKeys.Send("e");
+        }
+
+        private void HiddenCombo()
+        {
+            if (wantCursorUpPosition)
+            {
+                wantCursorUpPosition = false;
+                LowLevelMouse.SetCursorPos(Cursor.Position.X, Cursor.Position.Y + 10);
+            }
+            else
+            {
+                wantCursorUpPosition = true;
+                LowLevelMouse.SetCursorPos(Cursor.Position.X, Cursor.Position.Y - 10);
+            }
+            SendKeys.Send("w");
+            Thread.Sleep(4);
+            SendKeys.Send("w");
+            Thread.Sleep(4);
+            SendKeys.Send("e");
         }
 
         private void LeftClick()
@@ -101,6 +157,13 @@ namespace Al_DarkR3X
             inputSimulator.Mouse.LeftButtonDown();
             Thread.Sleep(1);
             inputSimulator.Mouse.LeftButtonUp();
+        }
+
+        private void SetEnableProcess(bool isEnable)
+        {
+            Console.WriteLine(isEnable);
+            enableProcess = isEnable;
+            enableCheckBox.Checked = isEnable;
         }
 
     }
