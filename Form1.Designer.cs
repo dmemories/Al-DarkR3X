@@ -68,6 +68,7 @@
             this.enableCheckBox.TabIndex = 2;
             this.enableCheckBox.Text = "Enable";
             this.enableCheckBox.UseVisualStyleBackColor = true;
+            this.enableCheckBox.CheckedChanged += new System.EventHandler(this.enableCheckBox_CheckedChanged);
             // 
             // Form1
             // 

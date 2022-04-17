@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Al_DarkR3X.ico</ApplicationIcon>
+    <ApplicationIcon>Untitled-3 %281%29.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -92,6 +92,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Al_DarkR3X.ico" />
+    <Content Include="Untitled-3 %281%29.ico" />
+    <Content Include="Untitled-3.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

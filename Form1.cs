@@ -14,8 +14,8 @@ namespace Al_DarkR3X
         private bool wantCursorUpPosition;
 
         private int DELAY_AFTER_ZEN = 50; // 20, 
-        private int DELAY_AFTER_ABSORB = 120; // 90, 120
-        private int DELAY_BEFORE_CLICK = 10;
+        private int DELAY_AFTER_ABSORB = 90; // 90, 120
+        private int DELAY_BEFORE_CLICK = 1;
 
         public Form1()
         {
@@ -56,15 +56,11 @@ namespace Al_DarkR3X
                 switch (e.KeyPressed.ToString())
                 {
                     case "D3":
-                        CastCombo();
-                        Thread.Sleep(DELAY_AFTER_ZEN);
-                        CastCombo();
-                        Thread.Sleep(DELAY_AFTER_ZEN);
-                        CastCombo();
+                        ZenHidden();
                         break;
 
                     case "D4":
-                        ZenHidden();
+                        CastCombo();
                         break;
 
                     case "D5":
@@ -73,8 +69,8 @@ namespace Al_DarkR3X
 
                     case "D6":
                         SendKeys.Send("a");
-                        Thread.Sleep(4);
-                        SendKeys.Send("Z");
+                        Thread.Sleep(80);
+                        SendKeys.Send("z");
                         break;
                 }
                 Thread.Sleep(10);
@@ -120,16 +116,11 @@ namespace Al_DarkR3X
                 LowLevelMouse.SetCursorPos(Cursor.Position.X, Cursor.Position.Y - 10);
             }
             SendKeys.Send("w");
-            Thread.Sleep(50);
-            SendKeys.Send("{F4}");
-            Thread.Sleep(DELAY_BEFORE_CLICK);
-            LeftClick();
-            Thread.Sleep(DELAY_AFTER_ABSORB);
+            Thread.Sleep(10);
             SendKeys.Send("{F2}");
-
             Thread.Sleep(10);
             SendKeys.Send("w");
-            Thread.Sleep(40);
+            Thread.Sleep(16);
             SendKeys.Send("e");
         }
 
@@ -146,9 +137,9 @@ namespace Al_DarkR3X
                 LowLevelMouse.SetCursorPos(Cursor.Position.X, Cursor.Position.Y - 10);
             }
             SendKeys.Send("w");
-            Thread.Sleep(4);
+            SendKeys.Send("{F1}");
+            Thread.Sleep(1);
             SendKeys.Send("w");
-            Thread.Sleep(4);
             SendKeys.Send("e");
         }
 
@@ -166,6 +157,10 @@ namespace Al_DarkR3X
             enableCheckBox.Checked = isEnable;
         }
 
+        private void enableCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            SetEnableProcess(enableCheckBox.Checked);
+        }
     }
 
 }
