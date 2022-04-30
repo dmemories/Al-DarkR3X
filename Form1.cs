@@ -1,166 +1,191 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Threading;
+using System.Runtime.InteropServices;
+using WindowsInput.Native;
 using WindowsInput;
 
 namespace Al_DarkR3X
 {
     public partial class Form1 : Form
     {
-        private LowLevelKeyboardListener lowLevelKeyboardListener;
-        private InputSimulator inputSimulator;
-        private bool enableProcess;
-        private bool skipKeypress;
-        private bool wantCursorUpPosition;
+        // https://blog.krybot.com/a?ID=00100-e197e40c-67bb-442f-a7ad-4c8030f5baef
+        [DllImport("User32.dll")]
+        static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
 
-        private int DELAY_AFTER_ZEN = 50; // 20, 
-        private int DELAY_AFTER_ABSORB = 90; // 90, 120
-        private int DELAY_BEFORE_CLICK = 1;
-
+        [DllImport("User32.dll")]
+        public static extern short GetAsyncKeyState(Keys ArrowKeys);
         public Form1()
         {
             InitializeComponent();
-            inputSimulator = new InputSimulator();
-            lowLevelKeyboardListener = new LowLevelKeyboardListener();
-            lowLevelKeyboardListener.OnKeyPressed += _listener_OnKeyPressed;
-            lowLevelKeyboardListener.HookKeyboard();
-            enableProcess = true;
-            skipKeypress = false;
-            wantCursorUpPosition = true;
-            SetEnableProcess(true);
+            Hook.CreateHook(KeyReaderr);
         }
 
-        void _listener_OnKeyPressed(object sender, KeyPressedArgs e)
+        const int DELAY_LEFT_CLICK = 14;
+        InputSimulator inputSimulator = new InputSimulator();
+
+        bool wantCursorUpPosition = false;
+        bool isClicking = false;
+        bool isCasting = false;
+        bool wantHiddenCasting = false;
+
+        bool isCastingCombo = false;
+
+        static void OnProcessExit(object sender, EventArgs e)
         {
-            Console.WriteLine(e.KeyPressed.ToString());
-            string activeTitle = ActiveWindow.GetActiveWindowTitle().ToLower();
+            Hook.DestroyHook();
+            Console.WriteLine("Hook Destroyed.");
+        }
 
-            if (e.KeyPressed.ToString() == "PageUp")
+        public void RunClickKey(string key)
+        {
+            Delay(1);
+            switch (key)
             {
-                if (enableProcess) SetEnableProcess(false);
-                else SetEnableProcess(true);
-                return;
+                case "VK_F122":
+                    while (true)
+                    {
+                        inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F1);
+                        LeftClick();
+                        keybd_event(112, 0x45, 0x0001 | 0, 0);
+                        Delay(DELAY_LEFT_CLICK);
+                        byte[] result = BitConverter.GetBytes(GetAsyncKeyState(Keys.F1));
+                        if (result[1] < 1) break;
+                    }
+                    LeftClick();
+                    keybd_event(112, 0x45, 0x0001 | 0x0002, 0);
+                    break;
+
+                case "VK_F":
+                    while (true)
+                    {
+                        inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_F);
+                        LeftClick();
+                        keybd_event(70, 0x45, 0x0001 | 0, 0);
+                        Delay(DELAY_LEFT_CLICK);
+                        byte[] result = BitConverter.GetBytes(GetAsyncKeyState(Keys.F));
+                        if (result[1] < 1) break;
+                    }
+                    LeftClick();
+                    keybd_event(70, 0x45, 0x0001 | 0x0002, 0);
+                    break;
+
+                case "VK_H":
+                    while (true)
+                    {
+                        inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_H);
+                        LeftClick();
+                        keybd_event(72, 0x45, 0x0001 | 0, 0);
+                        Delay(DELAY_LEFT_CLICK);
+                        byte[] result = BitConverter.GetBytes(GetAsyncKeyState(Keys.H));
+                        if (result[1] < 1) break;
+                    }
+                    LeftClick();
+                    keybd_event(72, 0x45, 0x0001 | 0x0002, 0);
+                    break;
+
+                case "VK_4":
+                    isCastingCombo = true;
+                    while (true)
+                    {
+                        wantCursorUpPosition = LowLevelMouse.moveMouse(wantCursorUpPosition);
+                        inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F4);
+                        LeftClick();
+                        //keybd_event(115, 0x45, 0x0001 | 0, 0);
+                        Delay(100);
+                        inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F2);
+                        Delay(50);
+                        if (wantHiddenCasting)
+                        {
+                            Delay(20);
+                            wantHiddenCasting = false;
+                            Hidden();
+                            break;
+                        }
+                        if (BitConverter.GetBytes(GetAsyncKeyState(Keys.D4))[1] < 1) break;
+                        Delay(50);
+                        if (BitConverter.GetBytes(GetAsyncKeyState(Keys.D4))[1] < 1) break;
+                    }
+                    //keybd_event(115, 0x45, 0x0001 | 0x0002, 0);
+                    isCastingCombo = false;
+                    break;
             }
-
-            if (
-                !enableProcess ||
-                skipKeypress ||
-                (!activeTitle.Contains("ro") && !activeTitle.Contains("pvp"))
-            )
-            {
-                return;
-            }
-            else
-            {
-                skipKeypress = true;
-                switch (e.KeyPressed.ToString())
-                {
-                    case "D3":
-                        ZenHidden();
-                        break;
-
-                    case "D4":
-                        CastCombo();
-                        break;
-
-                    case "D5":
-                        HiddenCombo();
-                        break;
-
-                    case "D6":
-                        SendKeys.Send("a");
-                        Thread.Sleep(80);
-                        SendKeys.Send("z");
-                        break;
-                }
-                Thread.Sleep(10);
-                skipKeypress = false;
-            }
+            isClicking = false;
         }
 
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        public void RunCastKey(string key)
         {
-            lowLevelKeyboardListener.UnHookKeyboard();
+            switch (key)
+            {
+                case "VK_3":
+                    if (isCastingCombo) wantHiddenCasting = true;
+                    break;
+
+                case "VK_5":
+                    inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_W);
+                    Delay(35);
+                    inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_W);
+                    Delay(40);
+                    inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_E);
+                    break;
+
+                case "VK_6":
+                    inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F3);
+                    LeftClick();
+                    Delay(1);
+                    inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_A);
+                    Delay(80);
+                    Hidden();
+                    break;
+            }
+            isCasting = false;
         }
 
-        private void CastCombo()
+        private void KeyReaderr(IntPtr wParam, IntPtr lParam)
         {
-            if (wantCursorUpPosition)
+            int key = Marshal.ReadInt32(lParam);
+            Hook.VK vk = (Hook.VK)key;
+            string keyString = vk.ToString();
+
+            if (!isClicking && (keyString == "VK_F1" || keyString == "VK_4" || keyString == "VK_F" || keyString == "VK_H"))
             {
-                wantCursorUpPosition = false;
-                LowLevelMouse.SetCursorPos(Cursor.Position.X, Cursor.Position.Y + 10);
+                isClicking = true;
+                Task.Run(() => RunClickKey(keyString));
             }
-            else
+            if (!isCasting && (keyString == "VK_6" || keyString == "VK_3" || keyString == "VK_5"))
             {
-                wantCursorUpPosition = true;
-                LowLevelMouse.SetCursorPos(Cursor.Position.X, Cursor.Position.Y - 10);
+                isCasting = true;
+                Task.Run(() => RunCastKey(keyString));
             }
-            SendKeys.Send("{F4}");
-            Thread.Sleep(DELAY_BEFORE_CLICK);
-            LeftClick();
-            Thread.Sleep(DELAY_AFTER_ABSORB);
-            SendKeys.Send("{F2}");
         }
 
-        private void ZenHidden()
+        private void Hidden()
         {
-            if (wantCursorUpPosition)
-            {
-                wantCursorUpPosition = false;
-                LowLevelMouse.SetCursorPos(Cursor.Position.X, Cursor.Position.Y + 10);
-            }
-            else
-            {
-                wantCursorUpPosition = true;
-                LowLevelMouse.SetCursorPos(Cursor.Position.X, Cursor.Position.Y - 10);
-            }
-            SendKeys.Send("w");
-            Thread.Sleep(10);
-            SendKeys.Send("{F2}");
-            Thread.Sleep(10);
-            SendKeys.Send("w");
-            Thread.Sleep(16);
-            SendKeys.Send("e");
-        }
-
-        private void HiddenCombo()
-        {
-            if (wantCursorUpPosition)
-            {
-                wantCursorUpPosition = false;
-                LowLevelMouse.SetCursorPos(Cursor.Position.X, Cursor.Position.Y + 10);
-            }
-            else
-            {
-                wantCursorUpPosition = true;
-                LowLevelMouse.SetCursorPos(Cursor.Position.X, Cursor.Position.Y - 10);
-            }
-            SendKeys.Send("w");
-            SendKeys.Send("{F1}");
-            Thread.Sleep(1);
-            SendKeys.Send("w");
-            SendKeys.Send("e");
+            inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_W);
+            Delay(20);
+            inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_E);
         }
 
         private void LeftClick()
         {
             inputSimulator.Mouse.LeftButtonDown();
-            Thread.Sleep(1);
             inputSimulator.Mouse.LeftButtonUp();
         }
 
-        private void SetEnableProcess(bool isEnable)
+        public static void Delay(int milliSec)
         {
-            Console.WriteLine(isEnable);
-            enableProcess = isEnable;
-            enableCheckBox.Checked = isEnable;
+            Task.Run(async delegate
+            {
+                await Task.Delay(milliSec);
+            }).Wait();
         }
 
         private void enableCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            SetEnableProcess(enableCheckBox.Checked);
+
         }
     }
+
 
 }

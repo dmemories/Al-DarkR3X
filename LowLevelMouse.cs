@@ -24,5 +24,19 @@ namespace Al_DarkR3X
             }
 
         }
+
+        public static bool moveMouse(bool wantCursorUpPosition)
+        {
+            if (wantCursorUpPosition)
+            {
+                LowLevelMouse.SetCursorPos(System.Windows.Forms.Cursor.Position.X, System.Windows.Forms.Cursor.Position.Y + 10);
+                return false;
+            }
+            else
+            {
+                LowLevelMouse.SetCursorPos(System.Windows.Forms.Cursor.Position.X, System.Windows.Forms.Cursor.Position.Y - 10);
+                return true;
+            }
+        }
     }
 }
