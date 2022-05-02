@@ -33,7 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Al_DarkR3X2.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -54,12 +55,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActiveWindow.cs" />
+    <Compile Include="Backup.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper.cs" />
     <Compile Include="Hook.cs" />
     <Compile Include="LowLevelMouse.cs" />
     <Compile Include="Program.cs" />
@@ -89,12 +92,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Al_DarkR3X.ico" />
-    <Content Include="Al_DarkR3X2.ico" />
-    <Content Include="Untitled-3 %281%29.ico" />
-    <Content Include="Untitled-3.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

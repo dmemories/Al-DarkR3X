@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label1 = new System.Windows.Forms.Label();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.enableCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
@@ -45,18 +44,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Al-DarkR3X 1.0";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.radioButton1.Location = new System.Drawing.Point(45, 199);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(85, 28);
-            this.radioButton1.TabIndex = 1;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Share";
-            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // enableCheckBox
             // 
@@ -77,7 +64,6 @@
             this.BackColor = System.Drawing.SystemColors.Desktop;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.enableCheckBox);
-            this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
@@ -90,7 +76,6 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.CheckBox enableCheckBox;
     }
 }
