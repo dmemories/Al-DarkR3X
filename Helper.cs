@@ -7,6 +7,8 @@ namespace Al_DarkR3X
 {
     class Helper
     {
+        // https://blog.krybot.com/a?ID=00100-e197e40c-67bb-442f-a7ad-4c8030f5baef
+
         public static void LeftClick(InputSimulator inputSimulator)
         {
             inputSimulator.Mouse.LeftButtonDown();

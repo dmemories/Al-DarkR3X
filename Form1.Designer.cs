@@ -31,25 +31,27 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label1 = new System.Windows.Forms.Label();
             this.enableCheckBox = new System.Windows.Forms.CheckBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 23.85276F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.label1.ForeColor = System.Drawing.Color.DarkRed;
             this.label1.Location = new System.Drawing.Point(181, 19);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(416, 63);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Al-DarkR3X 1.0";
+            this.label1.Text = "Al-DarkR3X 2.0";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // enableCheckBox
             // 
             this.enableCheckBox.AutoSize = true;
             this.enableCheckBox.ForeColor = System.Drawing.Color.White;
-            this.enableCheckBox.Location = new System.Drawing.Point(45, 124);
+            this.enableCheckBox.Location = new System.Drawing.Point(128, 143);
             this.enableCheckBox.Name = "enableCheckBox";
             this.enableCheckBox.Size = new System.Drawing.Size(96, 28);
             this.enableCheckBox.TabIndex = 2;
@@ -57,17 +59,29 @@
             this.enableCheckBox.UseVisualStyleBackColor = true;
             this.enableCheckBox.CheckedChanged += new System.EventHandler(this.enableCheckBox_CheckedChanged);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(349, 101);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(365, 337);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Desktop;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(778, 478);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.enableCheckBox);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Al-DarkR3X";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -77,6 +91,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox enableCheckBox;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 
