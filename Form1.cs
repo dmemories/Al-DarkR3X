@@ -27,6 +27,8 @@ namespace Al_DarkR3X
         const string HIDDEN_ASURA_KEY = "VK_5";
         const string DUEL_KEY = "VK_4";
         const string ABSORB_ZEN_HIDDEN_KEY = "VK_3";
+        const string ZEN_HIDDEN_KEY = "VK_2";
+        const string ABSORB_HIDDEN_KEY = "VK_1";
 
         const int DELAY_LEFT_CLICK = 20;
         const string ASURA_KEY = "VK_F1";
@@ -86,7 +88,8 @@ namespace Al_DarkR3X
                 keybd_event(keybdEventKeyNum, 0x45, 0x0001 | 0, 0);
                 Thread.Sleep(DELAY_LEFT_CLICK);
                 byte[] result = BitConverter.GetBytes(GetAsyncKeyState(asyncKeyState));
-                if (result[1] < 1) break;
+                Console.WriteLine(result[0] + ":" + result[1]);
+                if (result[1] < 1 || !Helper.isActiveWindow()) break;
             }
             Helper.LeftClick(inputSimulator);
             keybd_event(keybdEventKeyNum, 0x45, 0x0001 | 0x0002, 0);
@@ -99,9 +102,23 @@ namespace Al_DarkR3X
             int j = 0;
             switch (key)
             {
+                case ABSORB_HIDDEN_KEY:
+                    wantCursorUpPosition = LowLevelMouse.moveMouse(wantCursorUpPosition);
+                    inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F4);
+                    Helper.LeftClick(inputSimulator);
+                    Thread.Sleep(80);
+                    Helper.Hidden(inputSimulator);
+                    break;
+
+                case ZEN_HIDDEN_KEY:
+                    inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F2);
+                    Thread.Sleep(80);
+                    Helper.Hidden(inputSimulator);
+                    break;
+
                 case ABSORB_ZEN_HIDDEN_KEY:
                     wantCursorUpPosition = Helper.AbsorbZen(wantCursorUpPosition, inputSimulator);
-                    Thread.Sleep(70);
+                    Thread.Sleep(80);
                     Helper.Hidden(inputSimulator);
                     break;
 
@@ -111,8 +128,8 @@ namespace Al_DarkR3X
 
                     for (int i = 0; i < 26; i++)
                     {
-                        if (!isWatingAsura) break;
                         Thread.Sleep(1);
+                        if (!isWatingAsura) break;
                         if (j == 16 || j == 19)
                         {
                             wantCursorUpPosition = LowLevelMouse.moveMouse(wantCursorUpPosition);
@@ -126,12 +143,12 @@ namespace Al_DarkR3X
 
                 case HIDDEN_ASURA_KEY:
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_W);
-                    Thread.Sleep(18);
+                    Thread.Sleep(20);
                     wantCursorUpPosition = LowLevelMouse.moveMouse(wantCursorUpPosition);
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F1);
                     Helper.LeftClick(inputSimulator);
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_W);
-                    Thread.Sleep(16);
+                    Thread.Sleep(40);
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_E);
                     break;
 
@@ -140,7 +157,7 @@ namespace Al_DarkR3X
                     Helper.LeftClick(inputSimulator);
                     Thread.Sleep(1);
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_A);
-                    Thread.Sleep(80);
+                    Thread.Sleep(90);
                     Helper.Hidden(inputSimulator);
                     break;
 
@@ -157,10 +174,9 @@ namespace Al_DarkR3X
             {
                 SetEnableProcess(!enableProcess);
             }
-            string activeTitle = ActiveWindow.GetActiveWindowTitle().ToLower();
             if (
                 !enableProcess ||
-                (!activeTitle.Contains("ro") && !activeTitle.Contains("pvp"))
+                !Helper.isActiveWindow()
             )
             { return; }
 
@@ -176,14 +192,25 @@ namespace Al_DarkR3X
             }
             if (isCasting) return;
 
-            switch (keyString) {
+
+            switch (keyString)
+            {
                 case ASURA_KEY:
-                case ABSORB_ZEN_HIDDEN_KEY:
-                case HIDDEN_ASURA_KEY:
-                case JUMP_HIDDEN_KEY:
                 case FINGER_OFFENSIVE_KEY:
                 case INVESTIGATE_KEY:
                     Task.Run(() => RunClickKey(keyString));
+                    break;
+
+                default: break;
+            }
+
+            switch (keyString) {
+                case ABSORB_HIDDEN_KEY:
+                case ZEN_HIDDEN_KEY:
+                case ABSORB_ZEN_HIDDEN_KEY:
+                case HIDDEN_ASURA_KEY:
+                case JUMP_HIDDEN_KEY:
+                    Task.Run(() => RunCastKey(keyString));
                     break;
 
                 default: break;

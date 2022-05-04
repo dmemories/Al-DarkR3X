@@ -37,5 +37,11 @@ namespace Al_DarkR3X
             return result;
         }
 
+        public static bool isActiveWindow()
+        {
+            string activeTitle = ActiveWindow.GetActiveWindowTitle().ToLower();
+            return activeTitle.Contains("ro") || activeTitle.Contains("pvp");
+        }
+
     }
 }
