@@ -40,18 +40,18 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 23.85276F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.label1.ForeColor = System.Drawing.Color.DarkRed;
-            this.label1.Location = new System.Drawing.Point(181, 19);
+            this.label1.Location = new System.Drawing.Point(117, 23);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(416, 63);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Al-DarkR3X 2.0";
+            this.label1.Text = "Al-DarkR3X 3.0";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // enableCheckBox
             // 
             this.enableCheckBox.AutoSize = true;
             this.enableCheckBox.ForeColor = System.Drawing.Color.White;
-            this.enableCheckBox.Location = new System.Drawing.Point(128, 143);
+            this.enableCheckBox.Location = new System.Drawing.Point(93, 249);
             this.enableCheckBox.Name = "enableCheckBox";
             this.enableCheckBox.Size = new System.Drawing.Size(96, 28);
             this.enableCheckBox.TabIndex = 2;
@@ -62,9 +62,9 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(349, 101);
+            this.pictureBox1.Location = new System.Drawing.Point(285, 100);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(365, 337);
+            this.pictureBox1.Size = new System.Drawing.Size(328, 398);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
@@ -74,13 +74,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Desktop;
-            this.ClientSize = new System.Drawing.Size(778, 478);
+            this.ClientSize = new System.Drawing.Size(667, 537);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.enableCheckBox);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Al-DarkR3X";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

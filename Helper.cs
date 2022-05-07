@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using WindowsInput;
 using WindowsInput.Native;
@@ -40,7 +41,7 @@ namespace Al_DarkR3X
         public static bool isActiveWindow()
         {
             string activeTitle = ActiveWindow.GetActiveWindowTitle().ToLower();
-            return activeTitle.Contains("ro") || activeTitle.Contains("pvp");
+            return activeTitle.Contains("ro-") || activeTitle.Contains("pvp");
         }
 
     }
