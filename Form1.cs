@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using WindowsInput.Native;
 using WindowsInput;
 using System.Threading;
-using WindowInput = System.Windows.Input;
 using GmaHook = Gma.System.MouseKeyHook;
 
 namespace Al_DarkR3X
@@ -120,7 +119,7 @@ namespace Al_DarkR3X
             inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_E);
         }
 
-        private async void RunCastKey(string key)
+        private void RunCastKey(string key)
         {
             isCasting = true;
             int j = 0;
