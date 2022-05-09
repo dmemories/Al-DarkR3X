@@ -23,7 +23,7 @@ namespace Al_DarkR3X
 
         public static void Hidden(InputSimulator inputSimulator)
         {
-            inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_W);
+            //inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_W);
             Thread.Sleep(20);
             inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_E);
         }
