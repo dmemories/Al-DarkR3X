@@ -23,5 +23,5 @@ C:\Users\Alkaiser\Desktop\Al-DarkR3X\obj\Debug\Al-DarkR3X.csproj.CoreCompileInpu
 C:\Users\Alkaiser\Desktop\Al-DarkR3X\obj\Debug\Al-DarkR3X.csproj.CopyComplete
 C:\Users\Alkaiser\Desktop\Al-DarkR3X\obj\Debug\Al-DarkR3X.exe
 C:\Users\Alkaiser\Desktop\Al-DarkR3X\obj\Debug\Al-DarkR3X.pdb
-C:\Users\Alkaiser\Desktop\Al-DarkR3X\obj\Debug\Al-DarkR3X.csprojAssemblyReference.cache
 C:\Users\Alkaiser\Desktop\Al-DarkR3X\bin\Debug\Gma.System.MouseKeyHook.dll
+C:\Users\Alkaiser\Desktop\Al-DarkR3X\obj\Debug\Al-DarkR3X.csprojAssemblyReference.cache
