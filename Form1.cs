@@ -6,6 +6,7 @@ using WindowsInput.Native;
 using WindowsInput;
 using System.Threading;
 using GmaHook = Gma.System.MouseKeyHook;
+using System.Drawing;
 
 namespace Al_DarkR3X
 {
@@ -19,7 +20,6 @@ namespace Al_DarkR3X
         public static extern short GetAsyncKeyState(Keys ArrowKeys);
 
         InputSimulator inputSimulator = new InputSimulator();
-        bool enableProcess = false;
         bool wantCursorUpPosition = false;
         bool isCasting = false;
         bool isWatingAsura = false;
@@ -42,6 +42,10 @@ namespace Al_DarkR3X
         bool wantHiddenFlash = false;
         Keys clickingKeys = Keys.None;
 
+        // Mode
+        const string MODE_CHAMPION = "Chamption";
+        const string MODE_FARM = "Farm";
+
         public Form1()
         {
             InitializeComponent();
@@ -51,16 +55,14 @@ namespace Al_DarkR3X
             GmaHook.IKeyboardMouseEvents m_GlobalHook = GmaHook.Hook.GlobalEvents();
             m_GlobalHook.KeyDown += gmaKeyDownCallback;
             m_GlobalHook.KeyUp += gmaKeyUpCallback;
-        }
-
-        private bool isEnableProcess()
-        {
-            return (enableProcess && Helper.isActiveWindow());
+            modeComboBox.Items.Add(MODE_CHAMPION);
+            modeComboBox.Items.Add(MODE_FARM);
+            modeComboBox.SelectedItem = MODE_CHAMPION;
         }
 
         public void LoopClick(VirtualKeyCode vk)
         {
-            while (holdingKey && isEnableProcess())
+            while (holdingKey && Helper.isEnableProcess())
             {
                 if (vk == VirtualKeyCode.SPACE)
                 {
@@ -109,8 +111,9 @@ namespace Al_DarkR3X
 
         public void gmaKeyDownCallback(object sender, KeyEventArgs e)
         {
+            if (modeComboBox.SelectedItem.ToString() != MODE_CHAMPION) return;
             if (
-                isEnableProcess() &&
+                Helper.isEnableProcess() &&
                 !skipKeyDownEvent &&
                 !holdingKey
             )
@@ -226,14 +229,30 @@ namespace Al_DarkR3X
             int key = Marshal.ReadInt32(lParam);
             string keyString = ((Hook.VK)key).ToString();
 
-            if (keyString == "VK_PRIOR") SetEnableProcess(!enableProcess);
-            if (!isEnableProcess()) { return; }
+            if (keyString == "VK_PRIOR") SetEnableProcess(!Helper.enableProcess);
+            if (!Helper.isEnableProcess()) { return; }
 
+            switch (modeComboBox.SelectedItem)
+            {
+                case MODE_CHAMPION:
+                    KeyReaderChamption(keyString);
+                    break;
+
+                case MODE_FARM:
+                    Task.Run(() => (new Farm()).KeyReaderFarm(keyString));
+                    break;
+
+                default: break;
+            }
+        }
+
+        private void KeyReaderChamption(string keyString)
+        {
             if (
-                isCasting &&
-                keyString == ABSORB_ZEN_HIDDEN_KEY &&
-                wantHiddenFlash == false
-            )
+               isCasting &&
+               keyString == ABSORB_ZEN_HIDDEN_KEY &&
+               wantHiddenFlash == false
+           )
             {
                 wantHiddenFlash = true;
                 Task.Run(() => RunCastKey(keyString));
@@ -273,7 +292,7 @@ namespace Al_DarkR3X
         // =======================================================================
         private void SetEnableProcess(bool isEnable)
         {
-            enableProcess = isEnable;
+            Helper.enableProcess = isEnable;
             enableCheckBox.Checked = isEnable;
         }
 
@@ -286,6 +305,23 @@ namespace Al_DarkR3X
         {
             Hook.DestroyHook();
             Console.WriteLine("Hook Destroyed.");
+        }
+
+        private void modeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            switch (modeComboBox.SelectedItem.ToString())
+            {
+                case MODE_CHAMPION:
+                    pictureBox.Image = Properties.Resources.MBlack;
+                    break;
+
+                case MODE_FARM:
+                    pictureBox.Image = Properties.Resources.Blue;
+                    break;
+
+                default: break;
+            }
         }
     }
 

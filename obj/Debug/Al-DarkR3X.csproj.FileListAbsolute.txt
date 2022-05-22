@@ -31,7 +31,6 @@ C:\Users\Alkaiser\source\repos\Al-DarkR3X\bin\Debug\Al-DarkR3X.pdb
 C:\Users\Alkaiser\source\repos\Al-DarkR3X\bin\Debug\Gma.System.MouseKeyHook.dll
 C:\Users\Alkaiser\source\repos\Al-DarkR3X\bin\Debug\WindowsInput.dll
 C:\Users\Alkaiser\source\repos\Al-DarkR3X\bin\Debug\WindowsInput.xml
-C:\Users\Alkaiser\source\repos\Al-DarkR3X\obj\Debug\Al-DarkR3X.csprojAssemblyReference.cache
 C:\Users\Alkaiser\source\repos\Al-DarkR3X\obj\Debug\Al_DarkR3X.Form1.resources
 C:\Users\Alkaiser\source\repos\Al-DarkR3X\obj\Debug\Al_DarkR3X.Properties.Resources.resources
 C:\Users\Alkaiser\source\repos\Al-DarkR3X\obj\Debug\Al-DarkR3X.csproj.GenerateResource.cache
@@ -39,3 +38,5 @@ C:\Users\Alkaiser\source\repos\Al-DarkR3X\obj\Debug\Al-DarkR3X.csproj.CoreCompil
 C:\Users\Alkaiser\source\repos\Al-DarkR3X\obj\Debug\Al-DarkR3X.csproj.CopyComplete
 C:\Users\Alkaiser\source\repos\Al-DarkR3X\obj\Debug\Al-DarkR3X.exe
 C:\Users\Alkaiser\source\repos\Al-DarkR3X\obj\Debug\Al-DarkR3X.pdb
+C:\Users\Alkaiser\source\repos\Al-DarkR3X\bin\Debug\System.Drawing.Common.dll
+C:\Users\Alkaiser\source\repos\Al-DarkR3X\obj\Debug\Al-DarkR3X.csprojAssemblyReference.cache

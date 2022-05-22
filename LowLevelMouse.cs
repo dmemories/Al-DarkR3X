@@ -39,5 +39,10 @@ namespace Al_DarkR3X
             }
         }
 
+        public static void setCursor(int x, int y)
+        {
+            LowLevelMouse.SetCursorPos(x, y);
+        }
+
     }
 }
