@@ -6,7 +6,6 @@ using WindowsInput.Native;
 using WindowsInput;
 using System.Threading;
 using GmaHook = Gma.System.MouseKeyHook;
-using System.Drawing;
 
 namespace Al_DarkR3X
 {
@@ -179,6 +178,7 @@ namespace Al_DarkR3X
                     break;
 
                 case DUEL_KEY:
+                    bool skipAsura = false;
                     wantCursorUpPosition = Helper.AbsorbZen(wantCursorUpPosition, inputSimulator);
                     isWatingAsura = true;
                     for (int i = 0; i < 22; i++)
@@ -187,9 +187,14 @@ namespace Al_DarkR3X
                         if (!isWatingAsura || wantHiddenFlash) break;
                         if (j > 12)
                         {
-                            wantCursorUpPosition = LowLevelMouse.moveMouse(wantCursorUpPosition);
-                            inputSimulator.Keyboard.KeyPress(ASURA_VK_KEY);
-                            Helper.LeftClick(inputSimulator);
+                            if (skipAsura) skipAsura = false;
+                            else
+                            {
+                                skipAsura = true;
+                                wantCursorUpPosition = LowLevelMouse.moveMouse(wantCursorUpPosition);
+                                inputSimulator.Keyboard.KeyPress(ASURA_VK_KEY);
+                                Helper.LeftClick(inputSimulator);
+                            }
                         }
                         j++;
                     }
@@ -229,7 +234,7 @@ namespace Al_DarkR3X
             int key = Marshal.ReadInt32(lParam);
             string keyString = ((Hook.VK)key).ToString();
 
-            if (keyString == "VK_PRIOR") SetEnableProcess(!Helper.enableProcess);
+            if (keyString == "VK_PRIOR") { SetEnableProcess(!Helper.enableProcess); }
             if (!Helper.isEnableProcess()) { return; }
 
             switch (modeComboBox.SelectedItem)

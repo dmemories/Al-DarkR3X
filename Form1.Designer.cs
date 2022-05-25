@@ -45,7 +45,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(416, 63);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Al-DarkR3X 3.4";
+            this.label1.Text = "Al-DarkR3X 3.5";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // enableCheckBox
