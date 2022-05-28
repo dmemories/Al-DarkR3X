@@ -45,7 +45,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(416, 63);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Al-DarkR3X 3.5";
+            this.label1.Text = "Al-DarkR3X 4.0";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // enableCheckBox
@@ -54,7 +54,7 @@
             this.enableCheckBox.ForeColor = System.Drawing.Color.White;
             this.enableCheckBox.Location = new System.Drawing.Point(53, 119);
             this.enableCheckBox.Name = "enableCheckBox";
-            this.enableCheckBox.Size = new System.Drawing.Size(96, 28);
+            this.enableCheckBox.Size = new System.Drawing.Size(92, 26);
             this.enableCheckBox.TabIndex = 2;
             this.enableCheckBox.Text = "Enable";
             this.enableCheckBox.UseVisualStyleBackColor = true;

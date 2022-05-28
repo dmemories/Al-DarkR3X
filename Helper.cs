@@ -15,22 +15,15 @@ namespace Al_DarkR3X
         static public byte ALT_KEY = 164;
         public static bool enableProcess = false;
 
+        [DllImport("user32.dll")]
+        static extern void mouse_event(uint dwFlags, int dx, int dy, uint dwData, int dwExtraInfo);
+
+        static uint DOWN = 0x0002;
+        static uint UP = 0x0004;
+
         public static bool isEnableProcess()
         {
             return (enableProcess && Helper.isActiveWindow());
-        }
-
-        public static void LeftClick(InputSimulator inputSimulator)
-        {
-            inputSimulator.Mouse.LeftButtonDown();
-            inputSimulator.Mouse.LeftButtonUp();
-        }
-
-        public static void RightClick(InputSimulator inputSimulator)
-        {
-            inputSimulator.Mouse.LeftButtonDown();
-            Thread.Sleep(100);
-            inputSimulator.Mouse.LeftButtonUp();
         }
 
         public static void Delay(int milliSec)
@@ -40,17 +33,21 @@ namespace Al_DarkR3X
 
         public static void Hidden(InputSimulator inputSimulator)
         {
-            //inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_W);
             Thread.Sleep(20);
             inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_E);
         }
 
         public static bool AbsorbZen(bool wantCursorUpPosition, InputSimulator inputSimulator)
         {
-            bool result = LowLevelMouse.moveMouse(wantCursorUpPosition);
-            inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F4);
-            Helper.LeftClick(inputSimulator);
-            Thread.Sleep(115);
+            bool result = MouseEvent.moveMouse(wantCursorUpPosition);
+            keybd_event(115, 0x45, 0x0001 | 0, 0);
+            Thread.Sleep(1);
+            keybd_event(115, 0x45, 0x0001 | 0x0002, 0);
+            Thread.Sleep(1);
+            mouse_event(DOWN, 0, 0, 0, 0);
+            Thread.Sleep(1);
+            mouse_event(UP, 0, 0, 0, 0);
+            Thread.Sleep(Config.DELAY_AFTER_ABSORB);
             inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F2);
             return result;
         }
@@ -58,7 +55,7 @@ namespace Al_DarkR3X
         public static bool isActiveWindow()
         {
             string activeTitle = ActiveWindow.GetActiveWindowTitle().ToLower();
-            return activeTitle.Contains("ro-") || activeTitle.Contains("pvp");
+            return activeTitle.Contains("ro-") || activeTitle.Contains("pvp") || activeTitle.Contains("ragnarok");
         }
 
         public static void holdKey(byte keyCode)

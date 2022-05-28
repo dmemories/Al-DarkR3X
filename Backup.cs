@@ -13,6 +13,7 @@ namespace Al_DarkR3X
     public partial class Form1 : Form
     {
         // https://blog.krybot.com/a?ID=00100-e197e40c-67bb-442f-a7ad-4c8030f5baef
+        // https://www.gamedev.net/forums/topic/321029-how-to-simulate-a-mouse-click-in-c/
         [DllImport("User32.dll")]
         static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
 

@@ -39,3 +39,5 @@ C:\Users\Alkaiser\source\repos\Al-DarkR3X\obj\Debug\Al-DarkR3X.csproj.CopyComple
 C:\Users\Alkaiser\source\repos\Al-DarkR3X\obj\Debug\Al-DarkR3X.exe
 C:\Users\Alkaiser\source\repos\Al-DarkR3X\obj\Debug\Al-DarkR3X.pdb
 C:\Users\Alkaiser\source\repos\Al-DarkR3X\bin\Debug\System.Drawing.Common.dll
+C:\Users\Alkaiser\source\repos\Al-DarkR3X\obj\Debug\Al-DarkR3X.csproj.AssemblyReference.cache
+C:\Users\Alkaiser\source\repos\Al-DarkR3X\obj\Debug\Al-DarkR3X.csproj.SuggestedBindingRedirects.cache
