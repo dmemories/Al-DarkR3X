@@ -37,8 +37,9 @@ namespace Al_DarkR3X
             inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_E);
         }
 
-        public static bool AbsorbZen(bool wantCursorUpPosition, InputSimulator inputSimulator)
+        public static bool AbsorbZen(bool wantCursorUpPosition, InputSimulator inputSimulator, int processIndex = -1)
         {
+            if (processIndex < 0) processIndex = Form1.processIndex;
             bool result = MouseEvent.moveMouse(wantCursorUpPosition);
             keybd_event(115, 0x45, 0x0001 | 0, 0);
             Thread.Sleep(1);
@@ -48,7 +49,9 @@ namespace Al_DarkR3X
             Thread.Sleep(1);
             mouse_event(UP, 0, 0, 0, 0);
             Thread.Sleep(Config.DELAY_AFTER_ABSORB);
-            inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F2);
+            if (processIndex == Form1.processIndex) { 
+                inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F2);
+            }
             return result;
         }
 

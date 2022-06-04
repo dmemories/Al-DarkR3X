@@ -21,9 +21,6 @@ namespace Al_DarkR3X
         [DllImport("user32.dll")]
         static extern void mouse_event(uint dwFlags, int dx, int dy, uint dwData, int dwExtraInfo);
 
-        static uint DOWN = 0x0002;
-        static uint UP = 0x0004;
-
         InputSimulator inputSimulator = new InputSimulator();
         bool wantCursorUpPosition = false;
         bool isCasting = false;
@@ -61,9 +58,19 @@ namespace Al_DarkR3X
             GmaHook.IKeyboardMouseEvents m_GlobalHook = GmaHook.Hook.GlobalEvents();
             m_GlobalHook.KeyDown += gmaKeyDownCallback;
             m_GlobalHook.KeyUp += gmaKeyUpCallback;
+            //m_GlobalHook.MouseUp += gmaMouseClickCallback;
             modeComboBox.Items.Add(MODE_CHAMPION);
             modeComboBox.Items.Add(MODE_FARM);
             modeComboBox.SelectedItem = MODE_CHAMPION;
+        }
+
+        public void gmaMouseClickCallback(object sender, MouseEventArgs e)
+        {
+            if (e.Button.ToString() == "Right")
+            {
+                processIndex++;
+            }
+            return;
         }
 
         public void LoopClick(VirtualKeyCode vk)
@@ -98,11 +105,12 @@ namespace Al_DarkR3X
         {
             VirtualKeyCode resultVk = VirtualKeyCode.NONAME;
 
-            Keys[] keyList = { Keys.D1, Keys.F, Keys.H, Keys.Space };
+            Keys[] keyList = { Keys.D1, Keys.F, Keys.H, Keys.G, Keys.Space };
             VirtualKeyCode[] vkList = {
                 ASURA_VK_KEY,
                 VirtualKeyCode.VK_F,
                 VirtualKeyCode.VK_H,
+                VirtualKeyCode.VK_G,
                 VirtualKeyCode.SPACE
             };
             for (int i = 0; i < keyList.Length; i++)
@@ -188,7 +196,7 @@ namespace Al_DarkR3X
 
                 case DUEL_KEY:
                     bool skipAsura = false;
-                    wantCursorUpPosition = Helper.AbsorbZen(wantCursorUpPosition, inputSimulator);
+                    wantCursorUpPosition = Helper.AbsorbZen(wantCursorUpPosition, inputSimulator, Form1.processIndex);
                     isWaitingAsura = true;
                     for (int i = 0; i < 22; i++)
                     {
@@ -212,10 +220,7 @@ namespace Al_DarkR3X
                                 Thread.Sleep(MIN_DELAY);
                                 keybd_event(119, 0x45, 0x0001 | 0x0002, 0);
                                 wantCursorUpPosition = MouseEvent.moveMouse(wantCursorUpPosition, 2);
-                                Thread.Sleep(MIN_DELAY);
-                                mouse_event(DOWN, 0, 0, 0, 0);
-                                Thread.Sleep(MIN_DELAY);
-                                mouse_event(UP, 0, 0, 0, 0);
+                                MouseEvent.LeftClick();
                             }
                         }
                         else { Thread.Sleep(MIN_DELAY); }
@@ -228,8 +233,9 @@ namespace Al_DarkR3X
                 case JUMP_HIDDEN_KEY:
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F3);
                     MouseEvent.LeftClick();
-                    wantCursorUpPosition = MouseEvent.moveMouse(wantCursorUpPosition);
                     Thread.Sleep(Config.DELAY_AFTER_JUMP);
+                    inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F2);
+                    Thread.Sleep(Config.DELAY_AFTER_ZEN);
                     Helper.Hidden(inputSimulator);
                     break;
 

@@ -38,9 +38,9 @@ namespace Al_DarkR3X
         public static void LeftClick()
         {
             Thread.Sleep(1);
-            mouse_event(DOWN, Control.MousePosition.X, Control.MousePosition.Y, 0, 0);
+            mouse_event(DOWN, 0, 0, 0, 0);
             Thread.Sleep(1);
-            mouse_event(UP, Control.MousePosition.X, Control.MousePosition.Y, 0, 0);
+            mouse_event(UP, 0, 0, 0, 0);
         }
 
         public static bool moveMouse(bool wantCursorUpPosition, int newPos = 0)
