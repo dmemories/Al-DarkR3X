@@ -12,11 +12,16 @@ namespace Al_DarkR3X
         private const string TRIGGER_KEY = "VK_SPACE";
         private const int DELAY_BETWEEN_ENTER = 500;
         private const int DELAY_BETWEEN_SKILL = 390;
-        private const int RESTORE_WHEN_SKILL_TIMES = 70;
+        private const int RESTORE_WHEN_SKILL_TIMES = 140;
+        private const bool STORAGE_ITEM = false;
+        private const bool INCLUDE_LORD = true;
+        private const bool INCLUDE_STORM_GUST = true;
         private const bool INCLUDE_METEOR_STORM = false;
+        private const bool ONLY_CASTING = false;
 
         private Point initCursorPosition;
         private InputSimulator inputSimulator = new InputSimulator();
+        private int rounds = 0;
 
         private void LoadLocation() {
             Helper.keyWithALT(inputSimulator, VirtualKeyCode.VK_1);
@@ -25,9 +30,7 @@ namespace Al_DarkR3X
 
         private void StorageItem()
         {
-            Helper.keyWithALT(inputSimulator, VirtualKeyCode.VK_4);
             Helper.keyWithALT(inputSimulator, VirtualKeyCode.VK_9);
-            Helper.keyWithALT(inputSimulator, VirtualKeyCode.VK_0);
             Thread.Sleep(100);
             LowLevelMouse.setCursor(initCursorPosition.X - 265, initCursorPosition.Y - 350);
             Helper.keyWithALT(inputSimulator, VirtualKeyCode.VK_E);
@@ -47,7 +50,7 @@ namespace Al_DarkR3X
             LowLevelMouse.setCursor(initCursorPosition.X + 80, initCursorPosition.Y - 140);
             Helper.LeftClick(inputSimulator);
             Thread.Sleep(1000);
-            StorageItem();
+            if (STORAGE_ITEM) StorageItem();
         }
 
         private void WarpToFarmMap()
@@ -70,21 +73,36 @@ namespace Al_DarkR3X
 
         private void SkillAndWing()
         {
-            inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F3);
-            Helper.LeftClick(inputSimulator);
-            Thread.Sleep(500);
+            bool alreadyUseSkill = false;
+            if (INCLUDE_LORD)
+            {
+                inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F3);
+                Helper.LeftClick(inputSimulator);
+                alreadyUseSkill = true;
+            }
             if (INCLUDE_METEOR_STORM)
             {
+                if (alreadyUseSkill) Thread.Sleep(500);
                 inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F5);
                 Helper.LeftClick(inputSimulator);
+                alreadyUseSkill = true;
+            }
+            if (INCLUDE_STORM_GUST)
+            {
+                if (alreadyUseSkill) Thread.Sleep(500);
+                inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F4);
+                Helper.LeftClick(inputSimulator);
+            }
+            Thread.Sleep(1);
+            System.Console.WriteLine(rounds);
+            if ((rounds % 20) == 0)
+            {
+                inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_A);
                 Thread.Sleep(500);
             }
-            inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F4);
-            Helper.LeftClick(inputSimulator);
-            Thread.Sleep(1);
-            inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_X);
-            Thread.Sleep(100);
-            inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F1);
+            else inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_X);            
+            Thread.Sleep(120);
+            if (!ONLY_CASTING) inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F1);
         }
 
         public void KeyReaderFarm(string keyString)
@@ -92,24 +110,35 @@ namespace Al_DarkR3X
             if (keyString != TRIGGER_KEY) return;
             initCursorPosition = Cursor.Position;
 
-            LoadLocation();
-            HealAndStorage();
-            WarpToFarmMap();
-            int i = 0;
+            Helper.keyWithALT(inputSimulator, VirtualKeyCode.VK_4);
+            Helper.keyWithALT(inputSimulator, VirtualKeyCode.VK_0);
+            inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_A);
+            Thread.Sleep(100);
+            if (!ONLY_CASTING)
+            {
+                LoadLocation();
+                HealAndStorage();
+                WarpToFarmMap();
+            }
+
+            rounds = 0;
             while (true)
             {
                 if (!Helper.isEnableProcess()) break;
 
                 LowLevelMouse.setCursor(initCursorPosition.X, initCursorPosition.Y);
                 SkillAndWing();
-                i++;
-                if (i == RESTORE_WHEN_SKILL_TIMES)
+                if (!ONLY_CASTING)
                 {
-                    Thread.Sleep(3000);
-                    LoadLocation();
-                    HealAndStorage();
-                    WarpToFarmMap();
-                    i = 0;
+                    rounds++;
+                    if (rounds == RESTORE_WHEN_SKILL_TIMES)
+                    {
+                        Thread.Sleep(3000);
+                        LoadLocation();
+                        HealAndStorage();
+                        WarpToFarmMap();
+                        rounds = 0;
+                    }
                 }
                 Thread.Sleep(DELAY_BETWEEN_SKILL);
             }

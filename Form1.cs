@@ -205,8 +205,9 @@ namespace Al_DarkR3X
                 case JUMP_HIDDEN_KEY:
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F3);
                     Helper.LeftClick(inputSimulator);
-                    wantCursorUpPosition = LowLevelMouse.moveMouse(wantCursorUpPosition);
-                    Thread.Sleep(75);
+                    Thread.Sleep(10);
+                    inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_T);
+                    Thread.Sleep(56);
                     Helper.Hidden(inputSimulator);
                     break;
 
