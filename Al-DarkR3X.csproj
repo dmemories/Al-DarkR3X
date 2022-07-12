@@ -60,18 +60,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActiveWindow.cs" />
-    <Compile Include="Backup.cs" />
-    <Compile Include="Farm.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Libs\ActiveWindow.cs" />
+    <Compile Include="Blue.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helper.cs" />
-    <Compile Include="Hook.cs" />
-    <Compile Include="LowLevelMouse.cs" />
+    <Compile Include="Libs\Helper.cs" />
+    <Compile Include="Libs\Hook.cs" />
+    <Compile Include="Libs\LowLevelMouse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

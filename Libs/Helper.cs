@@ -2,7 +2,9 @@
 using System.Threading.Tasks;
 using WindowsInput;
 using WindowsInput.Native;
+using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using static Al_DarkR3X.Configuration;
 
 namespace Al_DarkR3X
 {
@@ -90,6 +92,27 @@ namespace Al_DarkR3X
             Helper.releaseKey(ALT_KEY);
         }
 
+        public static VirtualKeyCode getVirtualKeyCode(Keys keyCode)
+        {
+            VirtualKeyCode resultVk = VirtualKeyCode.NONAME;
+
+            Keys[] keyList = { Keys.D1, Keys.F, Keys.H, Keys.Space };
+            VirtualKeyCode[] vkList = {
+                ASURA_VK_KEY,
+                VirtualKeyCode.VK_F,
+                VirtualKeyCode.VK_H,
+                VirtualKeyCode.SPACE
+            };
+            for (int i = 0; i < keyList.Length; i++)
+            {
+                if (keyCode == keyList[i])
+                {
+                    resultVk = vkList[i];
+                    break;
+                }
+            }
+            return resultVk;
+        }
 
     }
 }

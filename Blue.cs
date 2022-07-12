@@ -6,7 +6,7 @@ using WindowsInput.Native;
 
 namespace Al_DarkR3X
 {
-    public class Farm
+    public class Blue
     {
 
         private const string TRIGGER_KEY = "VK_SPACE";

@@ -6,6 +6,7 @@ using WindowsInput.Native;
 using WindowsInput;
 using System.Threading;
 using GmaHook = Gma.System.MouseKeyHook;
+using static Al_DarkR3X.Configuration;
 
 namespace Al_DarkR3X
 {
@@ -22,19 +23,6 @@ namespace Al_DarkR3X
         bool wantCursorUpPosition = false;
         bool isCasting = false;
         bool isWatingAsura = false;
-
-        const int MIN_DELAY = 1;
-        const VirtualKeyCode ASURA_VK_KEY = VirtualKeyCode.F8;
-        const string JUMP_HIDDEN_KEY = "VK_6";
-        const string HIDDEN_ASURA_KEY = "VK_5";
-        const string DUEL_KEY = "VK_4";
-        const string ABSORB_ZEN_HIDDEN_KEY = "VK_3";
-        const string ZEN_HIDDEN_KEY = "VK_TAB";
-        const string ABSORB_HIDDEN_KEY = "192";
-        const string DODGE_ASURA_KEY = "VK_2";
-
-        const int DELAY_LEFT_CLICK = 12;
-        const int DELAY_HIDDEN_ASURA = 50;
         bool skipKeyDownEvent = false;
         bool holdingKey = false;
         bool holdingAlt = false;
@@ -59,53 +47,28 @@ namespace Al_DarkR3X
             modeComboBox.SelectedItem = MODE_CHAMPION;
         }
 
+        private void KeyPRessWithoutEvent(VirtualKeyCode vk)
+        {
+            skipKeyDownEvent = true;
+            inputSimulator.Keyboard.KeyPress(vk);
+            skipKeyDownEvent = false;
+        }
+
         public void LoopClick(VirtualKeyCode vk)
         {
             while (holdingKey && Helper.isEnableProcess())
             {
                 if (vk == VirtualKeyCode.SPACE)
                 {
-                    skipKeyDownEvent = true;
-                    inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F2);
-                    skipKeyDownEvent = false;
-                    Thread.Sleep(106);
-                    skipKeyDownEvent = true;
-                    inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_F);
-                    skipKeyDownEvent = false;
-                    Helper.LeftClick(inputSimulator);
-                    Thread.Sleep(DELAY_LEFT_CLICK);
+                    KeyPRessWithoutEvent(VirtualKeyCode.F2);
+                    Thread.Sleep(DELAY_LOOP_BETWEEEN_FINGER);
+                    KeyPRessWithoutEvent(VirtualKeyCode.VK_F);
                 }
-                else
-                {
-                    skipKeyDownEvent = true;
-                    inputSimulator.Keyboard.KeyPress(vk);
-                    skipKeyDownEvent = false;
-                    Helper.LeftClick(inputSimulator);
-                    Thread.Sleep(DELAY_LEFT_CLICK);
-                }
+                else { KeyPRessWithoutEvent(vk); }
+                Helper.LeftClick(inputSimulator);
+                Thread.Sleep(DELAY_LOOP_LEFT_CLICK);
             }
             Helper.LeftClick(inputSimulator);
-        }
-
-        private VirtualKeyCode getVirtualKeyCode(Keys keyCode)
-        {
-            VirtualKeyCode resultVk = VirtualKeyCode.NONAME;
-
-            Keys[] keyList = { Keys.D1, Keys.F, Keys.H, Keys.Space };
-            VirtualKeyCode[] vkList = {
-                ASURA_VK_KEY,
-                VirtualKeyCode.VK_F,
-                VirtualKeyCode.VK_H,
-                VirtualKeyCode.SPACE
-            };
-            for (int i = 0; i < keyList.Length; i++) {
-                if (keyCode == keyList[i])
-                {
-                    resultVk = vkList[i];
-                    break;
-                }
-            }
-            return resultVk;
         }
 
         public void gmaKeyDownCallback(object sender, KeyEventArgs e)
@@ -117,7 +80,7 @@ namespace Al_DarkR3X
                 !holdingKey
             )
             {
-                VirtualKeyCode vk = getVirtualKeyCode(e.KeyCode);
+                VirtualKeyCode vk = Helper.getVirtualKeyCode(e.KeyCode);
                 if (vk != VirtualKeyCode.NONAME)
                 {
                     holdingKey = true;
@@ -125,26 +88,17 @@ namespace Al_DarkR3X
                     Task.Run(() => LoopClick(vk));
                 }
             }
-            if (
-                !holdingAlt &&
-                (e.KeyCode == Keys.LMenu || e.KeyCode == Keys.RMenu)
-            ) holdingAlt = true;
+            if (!holdingAlt && (e.KeyCode == Keys.LMenu || e.KeyCode == Keys.RMenu)) holdingAlt = true;
         }
 
         public void gmaKeyUpCallback(object sender, KeyEventArgs e)
         {
-            if (
-                holdingAlt &&
-                (e.KeyCode == Keys.LMenu || e.KeyCode == Keys.RMenu)
-            ) holdingAlt = false;
-            else if (
-                holdingKey &&
-                !skipKeyDownEvent
-            ) {
+            if (holdingAlt && (e.KeyCode == Keys.LMenu || e.KeyCode == Keys.RMenu)) holdingAlt = false;
+            else if (holdingKey && !skipKeyDownEvent) {
                 if (
                     (e.KeyCode != Keys.D5 && e.KeyCode != Keys.W && e.KeyCode != Keys.E) ||
                     e.KeyCode == clickingKeys
-                 ) holdingKey = false;
+                ) holdingKey = false;
             }
         }
 
@@ -158,22 +112,22 @@ namespace Al_DarkR3X
                     wantCursorUpPosition = LowLevelMouse.moveMouse(wantCursorUpPosition);
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F4);
                     Helper.LeftClick(inputSimulator);
-                    Thread.Sleep(80);
+                    Thread.Sleep(DELAY_SKILL_BEFORE_HIDDEN);
                     Helper.Hidden(inputSimulator);
                     break;
 
                 case ZEN_HIDDEN_KEY:
                     keybd_event(9, 0x45, 0x0001 | 0x0002, 0);
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_W);
-                    Thread.Sleep(10);
+                    Thread.Sleep(DELAY_AFTER_SWITCH_ITEM);
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F2);
-                    Thread.Sleep(76);
+                    Thread.Sleep(DELAY_SKILL_BEFORE_HIDDEN);
                     Helper.Hidden(inputSimulator);
                     break;
 
                 case ABSORB_ZEN_HIDDEN_KEY:
                     wantCursorUpPosition = Helper.AbsorbZen(wantCursorUpPosition, inputSimulator);
-                    Thread.Sleep(80);
+                    Thread.Sleep(DELAY_SKILL_BEFORE_HIDDEN);
                     Helper.Hidden(inputSimulator);
                     break;
 
@@ -207,22 +161,22 @@ namespace Al_DarkR3X
                     Helper.LeftClick(inputSimulator);
                     Thread.Sleep(10);
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_T);
-                    Thread.Sleep(56);
+                    Thread.Sleep(DELAY_SKILL_JUMP_HIDDEN);
                     Helper.Hidden(inputSimulator);
                     break;
 
-                case HIDDEN_ASURA_KEY:
+                case FLASH_HIDDEN_KEY:
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_W);
-                    Thread.Sleep(DELAY_HIDDEN_ASURA);
+                    Thread.Sleep(DELAY_FLASH_HIDDEN);
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_E);
                     break;
 
-                case DODGE_ASURA_KEY:
+                case RELO_ASURA_KEY:
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_W);
-                    Thread.Sleep(10);
+                    Thread.Sleep(DELAY_AFTER_SWITCH_ITEM);
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F3);
                     Helper.LeftClick(inputSimulator);
-                    Thread.Sleep(100);
+                    Thread.Sleep(DELAY_ZEN_AFTER_RELO);
                     inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F2);
                     break;
             }
@@ -245,7 +199,7 @@ namespace Al_DarkR3X
                     break;
 
                 case MODE_FARM:
-                    Task.Run(() => (new Farm()).KeyReaderFarm(keyString));
+                    Task.Run(() => (new Blue()).KeyReaderFarm(keyString));
                     break;
 
                 default: break;
@@ -286,8 +240,8 @@ namespace Al_DarkR3X
                 case ZEN_HIDDEN_KEY:
                 case ABSORB_ZEN_HIDDEN_KEY:
                 case JUMP_HIDDEN_KEY:
-                case HIDDEN_ASURA_KEY:
-                case DODGE_ASURA_KEY:
+                case FLASH_HIDDEN_KEY:
+                case RELO_ASURA_KEY:
                     Task.Run(() => RunCastKey(keyString));
                     return;
 
@@ -295,7 +249,6 @@ namespace Al_DarkR3X
             }
         }
 
-        // =======================================================================
         private void SetEnableProcess(bool isEnable)
         {
             Helper.enableProcess = isEnable;
