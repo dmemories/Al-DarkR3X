@@ -3,10 +3,12 @@ using System.Drawing;
 using WindowsInput;
 using System.Threading;
 using WindowsInput.Native;
+using Al_DarkR3X.Class;
+using Al_DarkR3X.Libs;
 
 namespace Al_DarkR3X
 {
-    public class Blue
+    public class Blue: Hero, IHeroClass
     {
 
         private const string TRIGGER_KEY = "VK_SPACE";
@@ -24,20 +26,20 @@ namespace Al_DarkR3X
         private int rounds = 0;
 
         private void LoadLocation() {
-            Helper.keyWithALT(inputSimulator, VirtualKeyCode.VK_1);
+            Keyboard.KeyWithALT(VirtualKeyCode.VK_1);
             Thread.Sleep(3000);
         }
 
         private void StorageItem()
         {
-            Helper.keyWithALT(inputSimulator, VirtualKeyCode.VK_9);
+            Keyboard.KeyWithALT(VirtualKeyCode.VK_9);
             Thread.Sleep(100);
-            LowLevelMouse.setCursor(initCursorPosition.X - 265, initCursorPosition.Y - 350);
-            Helper.keyWithALT(inputSimulator, VirtualKeyCode.VK_E);
+            Mouse.SetCursor(initCursorPosition.X - 265, initCursorPosition.Y - 350);
+            Keyboard.KeyWithALT(VirtualKeyCode.VK_E);
 
             Thread.Sleep(1000);
-            Helper.keyWithRightClick(inputSimulator);
-            Helper.keyWithALT(inputSimulator, VirtualKeyCode.VK_E);
+            Keyboard.KeyWithRightClick();
+            Keyboard.KeyWithALT(VirtualKeyCode.VK_E);
             Thread.Sleep(100);
             LoadLocation();
         }
@@ -47,28 +49,28 @@ namespace Al_DarkR3X
             inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F9);
             Thread.Sleep(100);
             inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_O);
-            LowLevelMouse.setCursor(initCursorPosition.X + 80, initCursorPosition.Y - 140);
-            Helper.LeftClick(inputSimulator);
+            Mouse.SetCursor(initCursorPosition.X + 80, initCursorPosition.Y - 140);
+            Mouse.LeftClick();
             Thread.Sleep(1000);
             if (STORAGE_ITEM) StorageItem();
         }
 
         private void WarpToFarmMap()
         {
-            LowLevelMouse.setCursor(initCursorPosition.X, initCursorPosition.Y - 140);
+            Mouse.SetCursor(initCursorPosition.X, initCursorPosition.Y - 140);
             Thread.Sleep(100);
-            Helper.LeftClick(inputSimulator);
+            Mouse.LeftClick();
             Thread.Sleep(DELAY_BETWEEN_ENTER);
-            Helper.keyWithALT(inputSimulator, VirtualKeyCode.RETURN);
+            Keyboard.KeyWithALT(VirtualKeyCode.RETURN);
             Thread.Sleep(DELAY_BETWEEN_ENTER);
-            Helper.keyWithALT(inputSimulator, VirtualKeyCode.RETURN);
+            Keyboard.KeyWithALT(VirtualKeyCode.RETURN);
             Thread.Sleep(DELAY_BETWEEN_ENTER);
-            Helper.keyWithALT(inputSimulator, VirtualKeyCode.RETURN);
+            Keyboard.KeyWithALT(VirtualKeyCode.RETURN);
             Thread.Sleep(DELAY_BETWEEN_ENTER);
-            Helper.keyWithALT(inputSimulator, VirtualKeyCode.RETURN);
+            Keyboard.KeyWithALT(VirtualKeyCode.RETURN);
             Thread.Sleep(2000);
-            LowLevelMouse.setCursor(initCursorPosition.X, initCursorPosition.Y);
-            Helper.RightClick(inputSimulator);
+            Mouse.SetCursor(initCursorPosition.X, initCursorPosition.Y);
+            Mouse.RightClick();
         }
 
         private void SkillAndWing()
@@ -77,21 +79,21 @@ namespace Al_DarkR3X
             if (INCLUDE_LORD)
             {
                 inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F3);
-                Helper.LeftClick(inputSimulator);
+                Mouse.LeftClick();
                 alreadyUseSkill = true;
             }
             if (INCLUDE_METEOR_STORM)
             {
                 if (alreadyUseSkill) Thread.Sleep(500);
                 inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F5);
-                Helper.LeftClick(inputSimulator);
+                Mouse.LeftClick();
                 alreadyUseSkill = true;
             }
             if (INCLUDE_STORM_GUST)
             {
                 if (alreadyUseSkill) Thread.Sleep(500);
                 inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F4);
-                Helper.LeftClick(inputSimulator);
+                Mouse.LeftClick();
             }
             Thread.Sleep(1);
             System.Console.WriteLine(rounds);
@@ -105,13 +107,13 @@ namespace Al_DarkR3X
             if (!ONLY_CASTING) inputSimulator.Keyboard.KeyPress(VirtualKeyCode.F1);
         }
 
-        public void KeyReaderFarm(string keyString)
+        public void HookAction(string key)
         {
-            if (keyString != TRIGGER_KEY) return;
+            if (key != TRIGGER_KEY) return;
             initCursorPosition = Cursor.Position;
 
-            Helper.keyWithALT(inputSimulator, VirtualKeyCode.VK_4);
-            Helper.keyWithALT(inputSimulator, VirtualKeyCode.VK_0);
+            Keyboard.KeyWithALT(VirtualKeyCode.VK_4);
+            Keyboard.KeyWithALT(VirtualKeyCode.VK_0);
             inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_A);
             Thread.Sleep(100);
             if (!ONLY_CASTING)
@@ -124,9 +126,9 @@ namespace Al_DarkR3X
             rounds = 0;
             while (true)
             {
-                if (!Helper.isEnableProcess()) break;
+                if (!Helper.IsProcessEnabled()) break;
 
-                LowLevelMouse.setCursor(initCursorPosition.X, initCursorPosition.Y);
+                Mouse.SetCursor(initCursorPosition.X, initCursorPosition.Y);
                 SkillAndWing();
                 if (!ONLY_CASTING)
                 {
@@ -143,5 +145,9 @@ namespace Al_DarkR3X
                 Thread.Sleep(DELAY_BETWEEN_SKILL);
             }
         }
+
+
+        public bool HasVirtualLoopKey(VirtualKeyCode vk) { return false; }
+        public LoopClickCallback GetLoopClickCallback(VirtualKeyCode vk) { return null; }
     }
 }
